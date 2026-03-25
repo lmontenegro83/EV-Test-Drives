@@ -2,7 +2,7 @@
   "name": "EV Test Drive Scorer",
   "short_name": "EV Scorer",
   "description": "Score and compare EV test drives on the go",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#1a1a2e",
