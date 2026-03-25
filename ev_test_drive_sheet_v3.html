@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Test-Drive Sheet — March 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 16mm 12mm 16mm;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 14mm 16mm 12mm 16mm;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2.5px solid #1a1a2e;
+    margin-bottom: 10px;
+  }
+  .header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; white-space: nowrap; }
+  .header .meta { font-size: 9px; font-weight: 500; color: #6b7280; letter-spacing: 0.3px; text-transform: uppercase; }
+  .header .page-label { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 9px; color: #9ca3af; white-space: nowrap; }
+
+  /* ── PLANNING STRIP ── */
+  .planning-strip {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr 1.8fr;
+    gap: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .planning-strip .cell { padding: 7px 10px; border-right: 1px solid #e5e7eb; background: #f8fafc; }
+  .planning-strip .cell:last-child { border-right: none; }
+  .planning-strip .cell-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #1a1a2e; margin-bottom: 3px; }
+  .planning-strip .cell-content { font-size: 8.5px; color: #6b7280; line-height: 1.45; }
+  .planning-strip .blank-line { display: block; border-bottom: 1px solid #d1d5db; height: 14px; margin-top: 2px; }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: -0.2px; color: #1a1a2e;
+    margin-bottom: 5px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+  /* ── SHORTLIST TABLE ── */
+  .shortlist-table { width: 100%; border-collapse: collapse; font-size: 7.5px; margin-bottom: 10px; }
+  .shortlist-table th {
+    background: #1a1a2e; color: #fff; font-size: 6.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.4px; padding: 4px 5px; text-align: left; white-space: nowrap;
+  }
+  .shortlist-table td { padding: 3.5px 5px; border-bottom: 1px solid #e5e7eb; vertical-align: top; line-height: 1.3; }
+  .shortlist-table tr:nth-child(even) td { background: #f8fafc; }
+  .shortlist-table .model-name { font-weight: 700; color: #1a1a2e; white-space: nowrap; }
+  .shortlist-table .body-tag {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 6.5px;
+    padding: 1px 4px; border-radius: 3px; background: #e0e7ff; color: #3730a3; font-weight: 500;
+  }
+  .shortlist-table .lease { font-family: 'DM Mono', monospace; font-size: 7px; white-space: nowrap; }
+  .shortlist-table .specs { font-family: 'DM Mono', monospace; font-size: 6.5px; color: #6b7280; white-space: nowrap; }
+  .shortlist-table .why { color: #374151; font-size: 7px; }
+  .shortlist-table .watch { color: #92400e; font-style: italic; font-size: 7px; }
+
+  /* ── DRIVE ORDER ── */
+  .drive-order { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-start; }
+  .round-block { flex: 1; border: 1px solid #e5e7eb; border-radius: 5px; padding: 5px 7px; background: #fefefe; }
+  .round-label {
+    font-family: 'DM Mono', monospace; font-size: 7px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #fff; background: #1a1a2e; display: inline-block;
+    padding: 1px 6px; border-radius: 3px; margin-bottom: 3px;
+  }
+  .round-label.r2 { background: #475569; }
+  .round-label.r3 { background: #94a3b8; }
+  .round-label.watch { background: #d97706; }
+  .round-cars { font-size: 7.5px; color: #374151; line-height: 1.5; }
+
+  /* ── WATCHLIST BOX ── */
+  .watchlist-box {
+    border: 1.5px dashed #d97706;
+    border-radius: 5px;
+    padding: 5px 8px;
+    background: #fffbeb;
+    margin-bottom: 0;
+    font-size: 7.5px;
+    color: #92400e;
+    line-height: 1.4;
+  }
+  .watchlist-box strong { color: #78350f; }
+
+  /* ══════════════ PAGE 2 ══════════════ */
+
+  /* ── SPECS STRIP ── */
+  .specs-strip {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    font-size: 6px;
+  }
+  .spec-col { border-right: 1px solid #e5e7eb; padding: 4px 2px; text-align: center; }
+  .spec-col:last-child { border-right: none; }
+  .spec-col .sc-name { font-weight: 700; font-size: 7px; color: #1a1a2e; text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 2px; }
+  .spec-col .sc-row { font-family: 'DM Mono', monospace; font-size: 6.5px; color: #374151; line-height: 1.5; }
+  .spec-col .sc-label { font-size: 5.5px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  /* ── CHECKLIST TABLE ── */
+  .checklist-table { width: 100%; border-collapse: collapse; font-size: 7.5px; margin-bottom: 8px; }
+  .checklist-table th {
+    background: #1a1a2e; color: #fff; font-size: 6px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 2px; text-align: center; line-height: 1.3;
+  }
+  .checklist-table th:first-child { text-align: left; padding-left: 6px; min-width: 130px; }
+  .checklist-table td { padding: 3px 2px; border-bottom: 1px solid #e5e7eb; text-align: center; vertical-align: middle; }
+  .checklist-table td:first-child { text-align: left; padding-left: 6px; font-size: 7px; color: #374151; }
+  .checklist-table tr:nth-child(even) td { background: #f8fafc; }
+  .check-box { display: inline-block; width: 11px; height: 11px; border: 1.5px solid #c4c9d4; border-radius: 2px; vertical-align: middle; }
+
+  /* ── SCORE ROW ── */
+  .score-row {
+    display: grid; grid-template-columns: repeat(9, 1fr); gap: 0;
+    border: 1px solid #d1d5db; border-radius: 5px; overflow: hidden; margin-bottom: 8px;
+  }
+  .score-cell { text-align: center; padding: 5px 2px; border-right: 1px solid #e5e7eb; }
+  .score-cell:last-child { border-right: none; }
+  .score-car-name { font-size: 6.5px; font-weight: 700; color: #1a1a2e; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; }
+  .score-input { font-family: 'DM Mono', monospace; font-size: 13px; color: #d1d5db; line-height: 1; }
+
+  /* ── NOTES ── */
+  .notes-section { margin-top: 6px; }
+  .notes-title { font-size: 9px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .note-line { border-bottom: 1px solid #e5e7eb; height: 18px; }
+  .note-line:last-child { border-bottom: none; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: none; }
+    .page { padding: 0; width: auto; min-height: auto; }
+  }
+  @media screen {
+    body { background: #e5e7eb; padding: 20px; }
+    .page { background: #fff; margin: 0 auto 20px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); border-radius: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ PAGE 1 ════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <h1>EV Test-Drive Sheet</h1>
+    <span class="meta">Family of 4 &nbsp;|&nbsp; Full EV only &nbsp;|&nbsp; Excl. Tesla, Peugeot, XPeng &nbsp;|&nbsp; 36 mo / 15k km/yr &nbsp;|&nbsp; March 2026</span>
+    <span class="page-label">1 / 2</span>
+  </div>
+
+  <div class="planning-strip">
+    <div class="cell">
+      <div class="cell-label">Planning Date</div>
+      <span class="blank-line"></span>
+    </div>
+    <div class="cell">
+      <div class="cell-label">Top 3 to Book First</div>
+      <div class="cell-content">1.<span class="blank-line"></span>2.<span class="blank-line"></span>3.<span class="blank-line"></span></div>
+    </div>
+    <div class="cell">
+      <div class="cell-label">Charging Priority</div>
+      <div class="cell-content">Home / Public / Mixed</div>
+      <span class="blank-line"></span>
+    </div>
+    <div class="cell">
+      <div class="cell-label">How to Use</div>
+      <div class="cell-content">After each drive, rate comfort, child-seat practicality, trunk shape, and lease pain. Circle must-haves before visiting the dealer. Lease figures are marketplace ranges, not binding quotes.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Shortlist Summary &mdash; Verified March 2026</div>
+  <table class="shortlist-table">
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Body</th>
+        <th>Boot</th>
+        <th>Range</th>
+        <th>DC Peak</th>
+        <th>UVP</th>
+        <th>Lease/mo</th>
+        <th>Why Drive It</th>
+        <th>Watch-Out</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="model-name">Skoda Enyaq 85</td>
+        <td><span class="body-tag">SUV</span></td>
+        <td class="specs">585 L</td>
+        <td class="specs">~560 km</td>
+        <td class="specs">175 kW</td>
+        <td class="specs">~49k</td>
+        <td class="lease">&euro; 330&ndash;470</td>
+        <td class="why">Best all-around: square boot, wide doors, proven platform, lowest lease</td>
+        <td class="watch">Mainstream looks; heat pump optional</td>
+      </tr>
+      <tr>
+        <td class="model-name">Kia EV5</td>
+        <td><span class="body-tag">SUV</span></td>
+        <td class="specs">566 L</td>
+        <td class="specs">~530 km</td>
+        <td class="specs">150 kW</td>
+        <td class="specs">~46k</td>
+        <td class="lease">&euro; 430&ndash;560</td>
+        <td class="why">Flat 2 m load floor; 7-yr warranty; V2L; strong base kit</td>
+        <td class="watch">400V only (slower DC); AWD from mid-2026</td>
+      </tr>
+      <tr>
+        <td class="model-name">VW ID.7 Tourer</td>
+        <td><span class="body-tag" style="background:#fef3c7;color:#92400e;">Wagon</span></td>
+        <td class="specs">605 L</td>
+        <td class="specs">~620 km</td>
+        <td class="specs">200 kW</td>
+        <td class="specs">~55k</td>
+        <td class="lease">&euro; 500&ndash;680</td>
+        <td class="why">Best range + biggest wagon boot; Oberklasse ride quality</td>
+        <td class="watch">Not an SUV; higher lease; 1.2 t tow limit</td>
+      </tr>
+      <tr>
+        <td class="model-name">Hyundai IONIQ 5 FL</td>
+        <td><span class="body-tag" style="background:#e0f2fe;color:#075985;">CUV</span></td>
+        <td class="specs">520 L</td>
+        <td class="specs">~570 km</td>
+        <td class="specs">220 kW</td>
+        <td class="specs">~44k</td>
+        <td class="lease">&euro; 380&ndash;520</td>
+        <td class="why">Fastest charging (800V, 18 min); sliding rear bench; 1.6 t tow</td>
+        <td class="watch">Trunk shape less square; 520 L is smallest of the SUVs</td>
+      </tr>
+      <tr>
+        <td class="model-name">VW ID. Buzz</td>
+        <td><span class="body-tag" style="background:#fce7f3;color:#9d174d;">Van</span></td>
+        <td class="specs">1,121 L</td>
+        <td class="specs">~450 km</td>
+        <td class="specs">200 kW</td>
+        <td class="specs">~50k</td>
+        <td class="lease">&euro; 483&ndash;700</td>
+        <td class="why">Sliding doors = child-seat game-changer; massive cabin; 7-seat LWB</td>
+        <td class="watch">~20 kWh/100 km; shorter range; bigger footprint</td>
+      </tr>
+      <tr>
+        <td class="model-name">Ford Explorer EV</td>
+        <td><span class="body-tag">SUV</span></td>
+        <td class="specs">450 L</td>
+        <td class="specs">~600 km</td>
+        <td class="specs">185 kW</td>
+        <td class="specs">~40k</td>
+        <td class="lease">&euro; 380&ndash;520</td>
+        <td class="why">Lowest entry price; great real-world range; 17 L Mega Console</td>
+        <td class="watch">Smallest boot (450 L); no frunk; recall history</td>
+      </tr>
+      <tr>
+        <td class="model-name">BYD Sealion 7</td>
+        <td><span class="body-tag">SUV-Coup&eacute;</span></td>
+        <td class="specs">520+58 L</td>
+        <td class="specs">~502 km</td>
+        <td class="specs">230 kW</td>
+        <td class="specs">~50k</td>
+        <td class="lease">&euro; 550&ndash;700</td>
+        <td class="why">800V; 58 L frunk; full equipment standard; 6-yr warranty</td>
+        <td class="watch">Max payload only 410 kg (!); young dealer network</td>
+      </tr>
+      <tr>
+        <td class="model-name">NIO EL6</td>
+        <td><span class="body-tag">SUV</span></td>
+        <td class="specs">579 L</td>
+        <td class="specs">~580 km</td>
+        <td class="specs">180 kW</td>
+        <td class="specs">~66k</td>
+        <td class="lease">&euro; 700&ndash;900</td>
+        <td class="why">Premium cabin; battery swap; lounge seat; 23-speaker audio</td>
+        <td class="watch">~2&times; Enyaq lease cost; complex battery pricing; thin network</td>
+      </tr>
+      <tr>
+        <td class="model-name">NIO ET5 Touring</td>
+        <td><span class="body-tag" style="background:#fef3c7;color:#92400e;">Wagon</span></td>
+        <td class="specs">450 L</td>
+        <td class="specs">~580 km</td>
+        <td class="specs">180 kW</td>
+        <td class="specs">~60k</td>
+        <td class="lease">&euro; 625&ndash;800</td>
+        <td class="why">Gorgeous design; battery swap; premium interior</td>
+        <td class="watch">Small boot (450 L); tiny rear window; expensive</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Suggested Test-Drive Order</div>
+  <div class="drive-order">
+    <div class="round-block">
+      <span class="round-label">Round 1</span>
+      <div class="round-cars">Skoda Enyaq<br>Kia EV5<br>VW ID.7 Tourer<br>VW ID. Buzz</div>
+    </div>
+    <div class="round-block">
+      <span class="round-label r2">Round 2</span>
+      <div class="round-cars">Hyundai IONIQ 5<br>Ford Explorer EV<br>BYD Sealion 7</div>
+    </div>
+    <div class="round-block">
+      <span class="round-label r3">Round 3</span>
+      <div class="round-cars">NIO EL6<br>NIO ET5 Touring</div>
+    </div>
+    <div class="round-block">
+      <span class="round-label watch">Watchlist</span>
+      <div class="round-cars">BMW iX3 Neue Klasse<br><span style="font-size:6.5px;color:#92400e;">Launched Mar 2026; from &euro;69k. Wait for lease normalization + real reviews.</span></div>
+    </div>
+  </div>
+
+  <div class="watchlist-box">
+    <strong>BMW iX3 &ldquo;Neue Klasse&rdquo;</strong> &mdash; 520 L + 58 L frunk, ~600 km range, from &euro;68,900. Just launched. Lease offers still thin (~&euro;779+/mo). Revisit in 3&ndash;6 months.
+    &nbsp;&bull;&nbsp; <strong>Xiaomi YU7</strong> &mdash; Not available in Germany. Monitor for 2027+.
+  </div>
+
+</div>
+
+<!-- ════════════════════ PAGE 2 ════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <h1>EV Test-Drive Sheet</h1>
+    <span class="meta">Qualitative Checklist &nbsp;|&nbsp; March 2026</span>
+    <span class="page-label">2 / 2</span>
+  </div>
+
+  <!-- Quick-reference specs strip -->
+  <div class="section-title" style="margin-bottom:3px;">Quick Specs Reference</div>
+  <div class="specs-strip">
+    <div class="spec-col">
+      <div class="sc-name">Enyaq</div>
+      <div class="sc-row">585 L</div>
+      <div class="sc-row">560 km</div>
+      <div class="sc-row">175 kW</div>
+      <div class="sc-label">&euro;330&ndash;470</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">EV5</div>
+      <div class="sc-row">566 L</div>
+      <div class="sc-row">530 km</div>
+      <div class="sc-row">150 kW</div>
+      <div class="sc-label">&euro;430&ndash;560</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">ID.7 T</div>
+      <div class="sc-row">605 L</div>
+      <div class="sc-row">620 km</div>
+      <div class="sc-row">200 kW</div>
+      <div class="sc-label">&euro;500&ndash;680</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">IONIQ 5</div>
+      <div class="sc-row">520 L</div>
+      <div class="sc-row">570 km</div>
+      <div class="sc-row">220 kW</div>
+      <div class="sc-label">&euro;380&ndash;520</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">ID. Buzz</div>
+      <div class="sc-row">1,121 L</div>
+      <div class="sc-row">450 km</div>
+      <div class="sc-row">200 kW</div>
+      <div class="sc-label">&euro;483&ndash;700</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">Explorer</div>
+      <div class="sc-row">450 L</div>
+      <div class="sc-row">600 km</div>
+      <div class="sc-row">185 kW</div>
+      <div class="sc-label">&euro;380&ndash;520</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">Sealion 7</div>
+      <div class="sc-row">520+58 L</div>
+      <div class="sc-row">502 km</div>
+      <div class="sc-row">230 kW</div>
+      <div class="sc-label">&euro;550&ndash;700</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">EL6</div>
+      <div class="sc-row">579 L</div>
+      <div class="sc-row">580 km</div>
+      <div class="sc-row">180 kW</div>
+      <div class="sc-label">&euro;700&ndash;900</div>
+    </div>
+    <div class="spec-col">
+      <div class="sc-name">ET5 T</div>
+      <div class="sc-row">450 L</div>
+      <div class="sc-row">580 km</div>
+      <div class="sc-row">180 kW</div>
+      <div class="sc-label">&euro;625&ndash;800</div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-bottom:3px;">Check the box if the car performs well on that point</div>
+
+  <table class="checklist-table">
+    <thead>
+      <tr>
+        <th>Criteria</th>
+        <th>Enyaq</th>
+        <th>EV5</th>
+        <th>ID.7 T</th>
+        <th>IONIQ 5</th>
+        <th>ID. Buzz</th>
+        <th>Explorer</th>
+        <th>Sealion 7</th>
+        <th>EL6</th>
+        <th>ET5 T</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Easy child-seat loading / buckle access</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Rear-seat space for two child seats</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Stroller fits without removing wheels</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Trunk opening shape is practical</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Family weekend luggage fit</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Front-seat comfort</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Rear-seat comfort</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Visibility / confidence when driving</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Ride comfort over rough roads</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Cabin quietness</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Infotainment usability</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Parking / maneuvering ease</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Dealer experience / trust</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+      <tr><td>Lease quote feels acceptable</td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td><td><span class="check-box"></span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Overall Score</div>
+  <div class="score-row">
+    <div class="score-cell"><div class="score-car-name">Enyaq</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">EV5</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">ID.7 T</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">IONIQ 5</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">ID. Buzz</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">Explorer</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">Sealion 7</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell"><div class="score-car-name">EL6</div><div class="score-input">__ /14</div></div>
+    <div class="score-cell" style="border-right:none;"><div class="score-car-name">ET5 T</div><div class="score-input">__ /14</div></div>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-title">Notes</div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
