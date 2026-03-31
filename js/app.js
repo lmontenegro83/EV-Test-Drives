@@ -119,6 +119,19 @@
       lease: '625-800',
       why: 'Gorgeous design; battery swap; premium interior.',
       watch: 'Small boot (450 L); tiny rear window; expensive.'
+    },
+    {
+      id: 'ix1',
+      name: 'BMW iX1 xDrive30',
+      body: 'SUV',
+      bodyClass: '',
+      boot: '490 L',
+      range: '~440 km',
+      dcPeak: '130 kW',
+      uvp: '~55k',
+      lease: '350-550',
+      why: 'Premium build & interior; strong BMW dealer network; compact & easy to park.',
+      watch: 'Smallest boot & shortest range here; slowest DC (130 kW); 3-yr warranty.'
     }
   ];
 

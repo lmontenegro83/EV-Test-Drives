@@ -1,4 +1,4 @@
-const CACHE_NAME = "ev-scorer-v2";
+const CACHE_NAME = "ev-scorer-v3";
 const BASE = self.registration.scope;
 const ASSETS = [
   "./",
