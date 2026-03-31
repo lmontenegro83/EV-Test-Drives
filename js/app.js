@@ -43,17 +43,17 @@
       watch: 'Not an SUV; higher lease; 1.2 t tow limit.'
     },
     {
-      id: 'ioniq5',
-      name: 'Hyundai IONIQ 5 FL',
-      body: 'CUV',
-      bodyClass: 'cuv',
-      boot: '520 L',
-      range: '~570 km',
-      dcPeak: '220 kW',
-      uvp: '~44k',
-      lease: '380-520',
-      why: 'Fastest charging (800V, 18 min); sliding rear bench; 1.6 t tow.',
-      watch: 'Trunk shape less square; 520 L is smallest of the SUVs.'
+      id: 'ex40',
+      name: 'Volvo EX40',
+      body: 'SUV',
+      bodyClass: '',
+      boot: '452 L',
+      range: '~480 km',
+      dcPeak: '200 kW',
+      uvp: '~48k',
+      lease: '400-550',
+      why: 'Volvo safety pedigree; Google Built-In; solid build; 200 kW DC.',
+      watch: 'Aging CMA platform; boot only 452 L; no standard heat pump.'
     },
     {
       id: 'buzz',
