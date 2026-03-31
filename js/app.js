@@ -486,9 +486,19 @@
       }
     });
 
-    // Register service worker
+    // Register service worker & auto-reload on update
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {
+      navigator.serviceWorker.register('/sw.js').then((reg) => {
+        reg.update();
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'activated') {
+              window.location.reload();
+            }
+          });
+        });
+      }).catch(() => {
         // SW registration failed, app still works
       });
     }
