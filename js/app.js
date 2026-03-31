@@ -488,7 +488,7 @@
 
     // Register service worker & auto-reload on update
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then((reg) => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
         reg.update();
         reg.addEventListener('updatefound', () => {
           const newSW = reg.installing;
@@ -498,8 +498,28 @@
             }
           });
         });
+
+        // Manual update button
+        document.getElementById('btn-update').addEventListener('click', () => {
+          reg.update().then(() => {
+            caches.keys().then((keys) =>
+              Promise.all(keys.map((k) => caches.delete(k)))
+            ).then(() => {
+              showToast('Updating…');
+              setTimeout(() => window.location.reload(), 500);
+            });
+          });
+        });
       }).catch(() => {
-        // SW registration failed, app still works
+        // SW not available — button still clears cache
+        document.getElementById('btn-update').addEventListener('click', () => {
+          caches.keys().then((keys) =>
+            Promise.all(keys.map((k) => caches.delete(k)))
+          ).then(() => {
+            showToast('Updating…');
+            setTimeout(() => window.location.reload(), 500);
+          });
+        });
       });
     }
   }
